@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { useApp } from '../store';
 import type { WorkoutLog, ExerciseLog, SetEntry } from '../types';
 import { Card, Button, Input, Select, Modal } from '../components/ui';
-import { format, subDays } from 'date-fns';
 
 function SetRow({
   set,
@@ -206,11 +205,6 @@ export default function LogWorkout() {
     setTimeout(() => setSaved(false), 2000);
   };
 
-  const recentDates = Array.from({ length: 5 }, (_, i) => {
-    const d = subDays(new Date(today), i);
-    return format(d, 'yyyy-MM-dd');
-  });
-
   return (
     <div className="p-4 max-w-2xl mx-auto space-y-5">
       <div>
@@ -240,21 +234,13 @@ export default function LogWorkout() {
         </div>
         <div>
           <label className="text-slate-400 text-xs mb-1.5 block">Date</label>
-          <div className="flex gap-1.5 overflow-x-auto pb-0.5">
-            {recentDates.map(date => (
-              <button
-                key={date}
-                onClick={() => setSelectedDate(date)}
-                className={`flex-shrink-0 px-3 py-1.5 rounded-xl text-sm border transition-all ${
-                  selectedDate === date
-                    ? 'bg-orange-500/20 border-orange-500/50 text-orange-300'
-                    : 'bg-white/4 border-white/8 text-slate-400 hover:bg-white/8'
-                }`}
-              >
-                {date === today ? 'Today' : format(new Date(date), 'EEE d')}
-              </button>
-            ))}
-          </div>
+          <input
+            type="date"
+            value={selectedDate}
+            max={today}
+            onChange={e => setSelectedDate(e.target.value)}
+            className="bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-white text-sm focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500/30 w-full"
+          />
         </div>
       </Card>
 

@@ -109,7 +109,7 @@ export default function CheckIn() {
   const recentDates = Array.from({ length: 7 }, (_, i) => {
     const d = subDays(new Date(today), i);
     return format(d, 'yyyy-MM-dd');
-  });
+  }); // still used for attendance history list
 
   return (
     <div className="p-4 max-w-2xl mx-auto space-y-5">
@@ -121,29 +121,13 @@ export default function CheckIn() {
       {/* Date picker */}
       <Card className="p-4">
         <p className="text-slate-400 text-xs font-medium uppercase tracking-wider mb-3">Select Date</p>
-        <div className="flex gap-2 overflow-x-auto pb-1">
-          {recentDates.map(date => {
-            const isSelected = date === selectedDate;
-            const isToday = date === today;
-            return (
-              <button
-                key={date}
-                onClick={() => setSelectedDate(date)}
-                className={`flex-shrink-0 flex flex-col items-center px-3 py-2.5 rounded-xl border transition-all ${
-                  isSelected
-                    ? 'border-orange-500 bg-orange-500/15 text-white'
-                    : 'border-white/8 bg-white/3 text-slate-400 hover:bg-white/6'
-                }`}
-              >
-                <span className="text-xs font-medium">
-                  {isToday ? 'Today' : format(new Date(date), 'EEE')}
-                </span>
-                <span className="text-lg font-bold mt-0.5">{format(new Date(date), 'd')}</span>
-                <span className="text-[10px] opacity-70">{format(new Date(date), 'MMM')}</span>
-              </button>
-            );
-          })}
-        </div>
+        <input
+          type="date"
+          value={selectedDate}
+          max={today}
+          onChange={e => setSelectedDate(e.target.value)}
+          className="bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-white text-sm focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500/30 w-full"
+        />
       </Card>
 
       {scheduledSplit && (
