@@ -75,11 +75,17 @@ function UserCheckInCard({
   );
 }
 
+function localToday() {
+  const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+}
+
 export default function CheckIn() {
-  const { data, dispatch, today } = useApp();
+  const { data, dispatch } = useApp();
   const { settings, splits, schedules, workoutLogs } = data;
   const users = settings.users;
   const activeSchedule = schedules.find(s => s.id === settings.activeScheduleId);
+  const today = localToday();
 
   const [selectedDate, setSelectedDate] = useState(today);
 

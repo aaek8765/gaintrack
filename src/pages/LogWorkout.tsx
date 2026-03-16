@@ -140,11 +140,17 @@ function ExerciseCard({
   );
 }
 
+function localToday() {
+  const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+}
+
 export default function LogWorkout() {
-  const { data, dispatch, today } = useApp();
+  const { data, dispatch } = useApp();
   const { settings, splits, workoutLogs } = data;
   const users = settings.users;
   const unit = settings.weightUnit;
+  const today = localToday();
 
   const [selectedUserId, setSelectedUserId] = useState(users[0]?.id || '');
   const [selectedDate, setSelectedDate] = useState(today);
