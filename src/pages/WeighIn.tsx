@@ -2,7 +2,7 @@ import { useState, useMemo } from 'react';
 import { useApp } from '../store';
 import type { WeighIn } from '../types';
 import { Card, Button, Input, Select, UserAvatar } from '../components/ui';
-import { format, subDays, subWeeks, subMonths } from 'date-fns';
+import { format, subDays, subWeeks, subMonths } from 'date-fns'; // subDays used in sparkline
 
 type Period = 'week' | 'month' | 'year';
 
@@ -220,7 +220,6 @@ export default function WeighIn() {
       .slice(0, 14);
   }, [weighIns, selectedUserId]);
 
-  const recentDates = Array.from({ length: 5 }, (_, i) => format(subDays(new Date(today), i), 'yyyy-MM-dd'));
 
   return (
     <div className="p-4 max-w-2xl mx-auto space-y-5">
@@ -243,21 +242,13 @@ export default function WeighIn() {
           </div>
           <div>
             <label className="text-slate-400 text-xs block mb-1.5">Date</label>
-            <div className="flex gap-1 overflow-x-auto">
-              {recentDates.map(d => (
-                <button
-                  key={d}
-                  onClick={() => setSelectedDate(d)}
-                  className={`flex-shrink-0 px-2.5 py-1.5 rounded-xl text-xs border transition-all ${
-                    selectedDate === d
-                      ? 'bg-orange-500/20 border-orange-500/50 text-orange-300'
-                      : 'bg-white/4 border-white/8 text-slate-400 hover:bg-white/8'
-                  }`}
-                >
-                  {d === today ? 'Today' : format(new Date(d), 'EEE d')}
-                </button>
-              ))}
-            </div>
+            <input
+              type="date"
+              value={selectedDate}
+              max={today}
+              onChange={e => setSelectedDate(e.target.value)}
+              className="bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-white text-sm focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500/30 w-full"
+            />
           </div>
         </div>
 
